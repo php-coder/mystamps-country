@@ -10,4 +10,4 @@ fmt:
 	gofmt -s -d -w .
 
 clean:
-	rm my-country my-country-linux
+	rm -f my-country my-country-linux
