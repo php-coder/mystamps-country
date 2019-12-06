@@ -14,18 +14,18 @@ func main() {
 	// @todo #1 Load configuration from a file
 	user := os.Getenv("MYSQL_USER")
 	if user == "" {
-		log.Printf("MYSQL_USER env variable is not set. Defaults to 'mystamps'")
+		log.Printf("MYSQL_USER env variable is not set or empty. Defaults to 'mystamps'")
 		user = "mystamps"
 	}
 
 	pass := os.Getenv("MYSQL_PASSWORD")
 	if pass == "" {
-		log.Fatalf("MYSQL_PASSWORD env variable is not set")
+		log.Fatalf("MYSQL_PASSWORD env variable is not set or empty")
 	}
 
 	dbName := os.Getenv("MYSQL_DB")
 	if dbName == "" {
-		log.Printf("MYSQL_DB env variable is not set. Defaults to 'mystamps'")
+		log.Printf("MYSQL_DB env variable is not set or empty. Defaults to 'mystamps'")
 		dbName = "mystamps"
 	}
 
