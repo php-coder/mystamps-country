@@ -50,8 +50,8 @@ func main() {
 	// @todo #1 /countries/count: extract SQL query
 	// @todo #1 /countries/count: return JSON response
 	http.HandleFunc("/v0.1/countries/count", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
-			http.Error(w, http.StatusText(405), 405)
+		if r.Method != http.MethodGet {
+			http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 			return
 		}
 
@@ -61,7 +61,7 @@ func main() {
 		err := db.QueryRow("SELECT COUNT(*) FROM countries").Scan(&count)
 		if err != nil {
 			log.Printf("Scan() has failed: %v", err)
-			http.Error(w, http.StatusText(500), 500)
+			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 			return
 		}
 
