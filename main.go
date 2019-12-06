@@ -55,16 +55,10 @@ func main() {
 			return
 		}
 
-		// There is no check for ErrNoRows because COUNT(*) always returns a single row
-		row := db.QueryRow("SELECT COUNT(*) FROM countries")
-		if err != nil {
-			log.Printf("QueryRow() has failed: %v", err)
-			http.Error(w, http.StatusText(500), 500)
-			return
-		}
-
 		var count int
-		err := row.Scan(&count)
+
+		// There is no check for ErrNoRows because COUNT(*) always returns a single row
+		err := db.QueryRow("SELECT COUNT(*) FROM countries").Scan(&count)
 		if err != nil {
 			log.Printf("Scan() has failed: %v", err)
 			http.Error(w, http.StatusText(500), 500)
