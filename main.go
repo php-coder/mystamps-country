@@ -48,7 +48,6 @@ func main() {
 
 	// @todo #1 /countries/count: extract handler
 	// @todo #1 /countries/count: extract SQL query
-	// @todo #1 /countries/count: return JSON response
 	http.HandleFunc("/v0.1/countries/count", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
 			http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
@@ -64,6 +63,8 @@ func main() {
 			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 			return
 		}
+
+		w.Header().Add("Content-Type", "application/json")
 
 		fmt.Fprintf(w, "%d", count)
 	})
