@@ -68,9 +68,14 @@ func main() {
 		fmt.Fprintf(w, "%d", count)
 	})
 
-	log.Println("Running the server on port 8080")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	log.Printf("Running the server on port %v", port)
+
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		log.Fatalf("ListenAndServe failed: %v", err)
 	}
 }
