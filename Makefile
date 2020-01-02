@@ -1,4 +1,4 @@
-.PHONY: build build-linux fmt clean
+.PHONY: build build-linux fmt test clean
 
 SRCS := main.go db/db.go rest/rest.go
 
@@ -14,6 +14,9 @@ my-country-linux: $(SRCS)
 
 fmt:
 	gofmt -s -d -w .
+
+test:
+	go test ./...
 
 clean:
 	rm -f my-country my-country-linux
