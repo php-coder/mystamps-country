@@ -6,6 +6,7 @@ import "log"
 import "net/http"
 import "os"
 import _ "github.com/go-sql-driver/mysql"
+import "github.com/php-coder/mystamps-country/rest"
 
 // @todo #1 /countries/count: add tests
 func main() {
@@ -48,28 +49,7 @@ func main() {
 		w.Write([]byte("ok"))
 	})
 
-	// @todo #1 /countries/count: extract handler
-	// @todo #1 /countries/count: extract SQL query
-	mux.HandleFunc("/v0.1/countries/count", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodGet {
-			http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
-			return
-		}
-
-		var count int
-
-		// There is no check for ErrNoRows because COUNT(*) always returns a single row
-		err := db.QueryRow("SELECT COUNT(*) FROM countries").Scan(&count)
-		if err != nil {
-			log.Printf("Scan() has failed: %v", err)
-			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-			return
-		}
-
-		w.Header().Add("Content-Type", "application/json")
-
-		fmt.Fprintf(w, "%d", count)
-	})
+	rest.New(db).Register(mux)
 
 	port := os.Getenv("PORT")
 	if port == "" {
