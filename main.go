@@ -6,6 +6,7 @@ import "log"
 import "net/http"
 import "os"
 import _ "github.com/go-sql-driver/mysql"
+import "github.com/php-coder/mystamps-country/db"
 import "github.com/php-coder/mystamps-country/rest"
 
 // @todo #1 /countries/count: add tests
@@ -33,12 +34,12 @@ func main() {
 	// @todo #1 Consider passing params to db driver
 	dsn := fmt.Sprintf("%s:%s@tcp(localhost:3306)/%s", user, pass, dbName)
 
-	db, err := sql.Open("mysql", dsn)
+	mysql, err := sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatalf("Open() has failed: %v", err)
 	}
 
-	err = db.Ping()
+	err = mysql.Ping()
 	if err != nil {
 		log.Fatalf("Ping() has failed: %v", err)
 	}
@@ -49,7 +50,8 @@ func main() {
 		w.Write([]byte("ok"))
 	})
 
-	rest.New(db).Register(mux)
+	dao := db.New(mysql)
+	rest.New(dao).Register(mux)
 
 	port := os.Getenv("PORT")
 	if port == "" {
