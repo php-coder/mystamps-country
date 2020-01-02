@@ -42,13 +42,15 @@ func main() {
 		log.Fatalf("Ping() has failed: %v", err)
 	}
 
-	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		w.Write([]byte("ok"))
 	})
 
 	// @todo #1 /countries/count: extract handler
 	// @todo #1 /countries/count: extract SQL query
-	http.HandleFunc("/v0.1/countries/count", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/v0.1/countries/count", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
 			http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 			return
@@ -76,7 +78,7 @@ func main() {
 
 	log.Printf("Running the server on port %v", port)
 
-	if err := http.ListenAndServe(":"+port, nil); err != nil {
+	if err := http.ListenAndServe(":"+port, mux); err != nil {
 		log.Fatalf("ListenAndServe failed: %v", err)
 	}
 }
