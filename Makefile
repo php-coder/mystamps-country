@@ -1,3 +1,8 @@
+#
+# To get familiar with make's magic variables & syntax,
+# see https://devhints.io/makefile
+#
+
 .PHONY: build build-linux fmt test generate-coverage open-coverage clean
 
 SRCS := main.go db/db.go rest/rest.go
@@ -7,10 +12,10 @@ build: my-country
 build-linux: my-country-linux
 
 my-country: $(SRCS)
-	go build -o my-country .
+	go build -o $@ .
 
 my-country-linux: $(SRCS)
-	GOOS=linux GOARH=amd64 go build -o my-country-linux .
+	GOOS=linux GOARH=amd64 go build -o $@ .
 
 fmt:
 	gofmt -s -d -w .
