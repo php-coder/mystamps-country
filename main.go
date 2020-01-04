@@ -9,7 +9,7 @@ import _ "github.com/go-sql-driver/mysql"
 import "github.com/php-coder/mystamps-country/db"
 import "github.com/php-coder/mystamps-country/rest"
 
-// @todo #1 /countries/count: add tests
+// @todo #1 /countries/count: add integration tests
 func main() {
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 
