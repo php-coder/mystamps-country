@@ -1,4 +1,4 @@
-.PHONY: build build-linux fmt test clean
+.PHONY: build build-linux fmt test generate-coverage open-coverage clean
 
 SRCS := main.go db/db.go rest/rest.go
 
@@ -18,5 +18,16 @@ fmt:
 test:
 	go test ./...
 
+coverage.out:
+	go test ./... -cover -coverprofile=$@
+
+coverage.html: coverage.out
+	go tool cover -html=$< -o $@
+
+generate-coverage: coverage.html
+
+open-coverage: coverage.html
+	open $<
+
 clean:
-	rm -f my-country my-country-linux
+	rm -f my-country my-country-linux coverage.out coverage.html
