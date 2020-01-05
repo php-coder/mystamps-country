@@ -1,7 +1,6 @@
 package rest
 
 import "errors"
-import "io/ioutil"
 import "testing"
 import "net/http"
 import "net/http/httptest"
@@ -58,12 +57,7 @@ func TestCountHandler_ExpectedResult(t *testing.T) {
 		t.Errorf("unexpected response status, want: %v, got: %v", want, got)
 	}
 
-	bytes, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		t.Fatalf("unexpected error during reading of response body: %v", err)
-	}
-
-	if got, want := string(bytes), strconv.Itoa(expected); got != want {
+	if got, want := rec.Body.String(), strconv.Itoa(expected); got != want {
 		t.Errorf("unexpected result, want: %v got: %v", want, got)
 	}
 }
